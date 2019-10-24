@@ -1,0 +1,62 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form>
+        <p>
+            <legend>Файл сборки или детали:</legend>
+            <input name="model" type="file" />
+        </p>
+        <p>
+            <legend>Формат экспорта:</legend>
+            <select name="exportFormat">
+                <option>step</option>
+                <option>iges</option>
+                <option>acis</option>
+                <option>jt</option>
+                <option>parasolid</option>
+                <option>c3d</option>
+                <option selected>gltf</option>
+                <option>stl</option>
+                <option>vrml</option>
+            </select>
+        </p>
+        <p>
+            <legend>Токен:</legend>
+            <input name="token" type="text" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTY2NDg1NTkxLCJleHAiOjE1OTgwMjE1OTF9.ykeUjEi8nDvAkW2XaRehYW9w8IvsupLPG6dzCETVGr0"/>
+        </p>
+        <p>
+            <button onclick="handleConvertRequest(event)">Конвертировать</button>
+        </p>
+    </form>
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script>
+        function handleConvertRequest(event) {
+            event.preventDefault();
+            var form = document.querySelector('form');
+            var formData = new FormData(form)
+            $.ajax({
+                url: `http://195.133.144.86:4001/model?token=${formData.get('token')}&exportFormat=${formData.get('exportFormat')}`,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST', // For jQuery < 1.9
+                success: function (data) {
+                    alert('Converted model has been downloaded. See console!')
+                    console.log(data); // <- Здесь будет хранится содержимое полученного файла
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>
